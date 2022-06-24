@@ -1,10 +1,16 @@
 pipeline {
     agent any
-    /* insert Declarative Pipeline here */
     stages {
-        stage('success') {
+        stage('run-test') {
             steps {
-                echo 'ok'
+                sh 'chmod +x ./gradlew'
+                sh './gradlew test'
+                jacoco(
+                    classPattern: 'app/build/classes',
+                    inclusionPattern: '**/*.class',
+                    exclusionPattern: '**/*Test*.class',
+                    execPattern: 'app/build/jacoco/**/*.exec'
+            	   )
             }
         }
     }
